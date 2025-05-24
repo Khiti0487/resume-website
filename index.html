@@ -1,0 +1,214 @@
+<script type="text/javascript">
+        var gk_isXlsx = false;
+        var gk_xlsxFileLookup = {};
+        var gk_fileData = {};
+        function filledCell(cell) {
+          return cell !== '' && cell != null;
+        }
+        function loadFileData(filename) {
+        if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
+            try {
+                var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
+                var firstSheetName = workbook.SheetNames[0];
+                var worksheet = workbook.Sheets[firstSheetName];
+
+                // Convert sheet to JSON to filter blank rows
+                var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
+                // Filter out blank rows (rows where all cells are empty, null, or undefined)
+                var filteredData = jsonData.filter(row => row.some(filledCell));
+
+                // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
+                var headerRowIndex = filteredData.findIndex((row, index) =>
+                  row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
+                );
+                // Fallback
+                if (headerRowIndex === -1 || headerRowIndex > 25) {
+                  headerRowIndex = 0;
+                }
+
+                // Convert filtered JSON back to CSV
+                var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Create a new sheet from filtered array of arrays
+                csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
+                return csv;
+            } catch (e) {
+                console.error(e);
+                return "";
+            }
+        }
+        return gk_fileData[filename] || "";
+        }
+        </script><!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=768, initial-scale=1.0">
+    <title>Resume - Khiti Ranjan Jena</title>
+    <meta name="description" content="Professional Resume of Khiti Ranjan Jena - Technical Support Executive with expertise in Hardware, Systems Administration, and Customer Support.">
+    <meta name="author" content="Khiti Ranjan Jena">
+    <link rel="icon" href="assets/profile.jpg" type="image/jpeg">
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <img src="assets/profile.jpg" alt="Khiti Ranjan Jena Profile Picture" class="profile-pic">
+            <div class="header-text">
+                <h1>Khiti Ranjan Jena</h1>
+                <div class="contact-info">
+                    <p>Email: <a href="mailto:khitiranjan1995@gmail.com">khitiranjan1995@gmail.com</a></p>
+                    <p>Contact: <a href="tel:+917989215247">7989215247</a>, <a href="tel:+919676142057">9676142057</a></p>
+                    <p>LinkedIn: <a href="https://www.linkedin.com/in/khiti-ranjan-jena-8260b1154" target="_blank" rel="noopener">linkedin.com/in/khiti-ranjan-jena-8260b1154</a></p>
+                </div>
+            </div>
+        </header>
+
+        <div class="section career-objective">
+            <h2>Career Objective</h2>
+            <p>An innovative and highly skilled Technical Support Executive offering support and solutions to customer queries, especially pertaining to Hardware and Systems Administration. Excellent time management skills; proficient in computer skills; excellent organizational skills.</p>
+        </div>
+
+        <div class="section basic-academic-credentials">
+            <h2>Basic Academic Credentials</h2>
+            <table>
+                <tr>
+                    <th>Qualification</th>
+                    <th>Board/University</th>
+                    <th>Year</th>
+                    <th>Percentage</th>
+                </tr>
+                <tr>
+                    <td>B-Tech</td>
+                    <td>St. Marry’s Engineering College</td>
+                    <td>2014 - 2018</td>
+                    <td>60%</td>
+                </tr>
+                <tr>
+                    <td>Intermediate</td>
+                    <td>Sri Chaitanya Junior College</td>
+                    <td>2012 - 2014</td>
+                    <td>60%</td>
+                </tr>
+                <tr>
+                    <td>High School</td>
+                    <td>ST. Peters Model School</td>
+                    <td>2012</td>
+                    <td>55%</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="section skills">
+            <h2>Skills</h2>
+            <ul>
+                <li>Windows and Office</li>
+                <li>Hardware Support</li>
+                <li>Outlook Server Setup</li>
+                <li>Desktop Support</li>
+                <li>Technical Issues Analysis</li>
+                <li>Technical Troubleshooting</li>
+                <li>Customer Support</li>
+                <li>Software Diagnosis</li>
+            </ul>
+        </div>
+
+        <div class="section experience">
+            <h2>Experience</h2>
+            
+            <div class="experience-item">
+                <h3>Dell International Services India Pvt Ltd</h3>
+                <p><strong>Senior Technician, Technical Support (Dec 2021 - Present)</strong></p>
+                <p>Technical Support Executive (Sep 2021 - Dec 2021)</p>
+                <button class="toggle-btn" onclick="toggleDetails('dell-details')">Show Details</button>
+                <div id="dell-details" class="experience-details">
+                    <ul>
+                        <li>Delivered real-time technical support, resolving complex hardware and software issues to ensure seamless customer experience.</li>
+                        <li>Maintained accurate logging of customer interactions, adhering to Dell's processes and procedures for efficient service delivery.</li>
+                        <li>Utilized advanced support tools to provide fast and effective solutions, minimizing customer effort.</li>
+                        <li>Proactively escalated critical issues to CTE/QL/TL, ensuring timely resolution and customer satisfaction.</li>
+                        <li>Contributed to tool development by providing actionable feedback, enhancing support processes.</li>
+                        <li>Participated in social impact and community events, promoting Dell’s values and culture.</li>
+                        <li>Achieved 100% customer satisfaction during TQ period and received 0 Dsat rockstar award for 3 months.</li>
+                        <li>Earned appreciation emails and best comments rockstar award for exceptional customer feedback.</li>
+                        <li>Completed advanced trainings in AI, Creativity Boot Camp, and Cloud Computing Fundamentals to enhance technical expertise.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="experience-item">
+                <h3>Teleperformance (Microsoft Process)</h3>
+                <p><strong>Technical Support Executive (26 months)</strong></p>
+                <button class="toggle-btn" onclick="toggleDetails('teleperformance-details')">Show Details</button>
+                <div id="teleperformance-details" class="experience-details">
+                    <ul>
+                        <li>Provided technical support for Windows and Office products across MAC and Windows devices.</li>
+                        <li>Specialized in troubleshooting Outlook Manual Server Settings, ensuring smooth email functionality for clients.</li>
+                        <li>Diagnosed and resolved software and hardware issues, improving system performance and user satisfaction.</li>
+                        <li>Collaborated with cross-functional teams to address complex technical queries efficiently.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="experience-item">
+                <h3>QConneqt (Airtel Payments Bank)</h3>
+                <p><strong>Customer Support Executive (1 year)</strong></p>
+                <button class="toggle-btn" onclick="toggleDetails('qconneqt-details')">Show Details</button>
+                <div id="qconneqt-details" class="experience-details">
+                    <ul>
+                        <li>Assisted customers with transaction-related concerns, ensuring quick and accurate resolutions.</li>
+                        <li>Managed and mentored team members, fostering a collaborative and productive work environment.</li>
+                        <li>Trained new hires, improving team performance and onboarding efficiency.</li>
+                        <li>Received WOW excellence certification for outstanding customer service and team leadership.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="section certifications">
+            <h2>Certifications</h2>
+            <ul>
+                <li>Dell GenAI Foundations</li>
+                <li>Cloud Computing Fundamentals: Migrating to the Cloud</li>
+                <li>Cloud Computing Fundamentals: Storing and Managing Cloud Data</li>
+            </ul>
+        </div>
+
+        <div class="section achievements">
+            <h2>Achievements</h2>
+            <ul>
+                <li>Won a medal for the volleyball championship in school.</li>
+                <li>Actively participated in various sports activities for interschool competitions.</li>
+                <li>Won a blue belt in karate.</li>
+                <li>Participated in the Lemon Book of Records and Guinness Book of Records during schooling.</li>
+            </ul>
+        </div>
+
+        <div class="section interpersonal-skills">
+            <h2>Interpersonal Skills</h2>
+            <ul>
+                <li>Rapid Relationship Building</li>
+                <li>Confidence and Determination</li>
+                <li>Adaptability to Various Situations</li>
+                <li>Positive Attitude</li>
+                <li>Strong Communication Skills</li>
+            </ul>
+        </div>
+
+        <div class="section personal-details">
+            <h2>Personal Details</h2>
+            <p><strong>Name:</strong> Khiti Ranjan Jena</p>
+            <p><strong>Father’s Name:</strong> Khirod Kumar Jena</p>
+            <p><strong>Date of Birth:</strong> 18th February 1997</p>
+            <p><strong>Languages Known:</strong> English, Hindi, Telugu, Oriya</p>
+            <p><strong>Marital Status:</strong> Single</p>
+            <p><strong>Nationality/Religion:</strong> Indian</p>
+        </div>
+
+        <footer class="footer">
+            <p>Date: May 2025</p>
+            <p>Place: Hyderabad</p>
+        </footer>
+    </div>
+
+    <script src="js/script.js"></script>
+</body>
+</html>
